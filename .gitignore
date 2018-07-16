@@ -1,0 +1,6 @@
+.idea
+.vagrant
+*.log
+*.pyc
+secret.py
+database_secret.conf
