@@ -1,8 +1,4 @@
-<link href="//cdn.bootcss.com/prism/1.8.0/themes/prism.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/marked/0.3.19/marked.min.js"></script>
-<script src="https://cdn.bootcss.com/prism/1.13.0/prism.js"></script>
-<script src="https://cdn.bootcss.com/prism/1.13.0/plugins/autoloader/prism-autoloader.min.js"></script>
-<script>
+
     var e = function (sel) {
         return document.querySelector(sel)
     }
@@ -25,8 +21,8 @@
         }
     }
 
-    var highlight = function() {
-         // 自动加载对应的语言 不然要手动加入各个语言的 js
+    var highlight = function () {
+        // 自动加载对应的语言 不然要手动加入各个语言的 js
         Prism.plugins.autoloader.languages_path = 'https://cdn.bootcss.com/prism/1.13.0/components/'
     }
 
@@ -44,12 +40,21 @@
         }, 1000)
     }
 
+    function footer() {
+        var o = $(window).height()
+        $("#footer").addClass("fix-bottom")
+        $(document.body).height() < o ? $("#footer").addClass("fix-bottom") : $("#footer").removeClass("fix-bottom")
+    }
+
+    $(document).ready(function () {
+        footer()
+    })
+
     var __main = function () {
         markContents()
         highlight()
         registerTimer()
+
     }
 
     __main()
-
-</script>
