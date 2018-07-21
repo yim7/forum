@@ -19,7 +19,8 @@ csrf_tokens = dict()
 def csrf_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        token = request.form['csrf_token']
+        token = request.form['_csrf']
+        print("token",token)
         u = current_user()
         t = Token.one(content=token)
         if t is not None and t.user_id == u.id:

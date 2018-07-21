@@ -160,7 +160,7 @@ def profile():
         return redirect(url_for('.index'))
     else:
         token = new_csrf_token()
-        return render_template('user/profile.html', user=u, token=token)
+        return render_template('user/profile.html', user=u, csrf_token=token)
 
 
 @main.route('/setting', methods=['POST'])
