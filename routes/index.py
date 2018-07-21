@@ -45,7 +45,7 @@ main = Blueprint('index', __name__)
 @main.route("/")
 def index():
     u = current_user()
-    return render_template("index.html", user=u)
+    return redirect(url_for('topic.index'))
 
 
 @main.route("/register", methods=['POST'])

@@ -22,10 +22,10 @@ def index():
         ms = Topic.all()
     else:
         ms = Topic.all(board_id=board_id)
-    token = new_csrf_token()
+    # token = new_csrf_token()
     bs = Board.all()
     u = current_user()
-    return render_template("topic/index.html", u=u, ms=ms, token=token, bs=bs, bid=board_id)
+    return render_template("topic/index.html", user=u, ms=ms, bs=bs, bid=board_id)
 
 
 @main.route('/<int:id>')

@@ -30,7 +30,7 @@ def generate_fake_date():
     u = User.register(form)
 
     form = dict(
-        title='all'
+        title='分享'
     )
     b = Board.new(form)
     with open('markdown_demo.md', encoding='utf8') as f:

@@ -8,6 +8,7 @@ from routes.topic import main as topic_routes
 from routes.reply import main as reply_routes
 from routes.board import main as board_routes
 from routes.message import main as mail_routes, mail
+from routes import current_user
 
 
 def configured_app():
@@ -37,12 +38,15 @@ def register_routes(app):
     """
     # 注册蓝图
     # 有一个 url_prefix 可以用来给蓝图中的每个路由加一个前缀
-
     app.register_blueprint(index_routes)
     app.register_blueprint(topic_routes, url_prefix='/topic')
     app.register_blueprint(reply_routes, url_prefix='/reply')
     app.register_blueprint(board_routes, url_prefix='/board')
     app.register_blueprint(mail_routes, url_prefix='/mail')
+
+    @app.context_processor
+    def utility_processor():
+        return dict(current_user=current_user)
 
 
 # 运行代码
