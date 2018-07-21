@@ -44,8 +44,13 @@ main = Blueprint('index', __name__)
 
 @main.route("/")
 def index():
-    u = current_user()
     return redirect(url_for('topic.index'))
+
+
+@main.route("/about")
+def about():
+    u = current_user()
+    return render_template('about.html', user=u)
 
 
 @main.route("/register", methods=['POST'])
@@ -53,7 +58,18 @@ def register():
     form = request.form.to_dict()
     # 用类函数来判断
     u = User.register(form)
-    return redirect(url_for('.index'))
+    if u is None:
+        result = False
+    else:
+        result = True
+    return redirect(url_for('.register_view', success=result))
+
+
+@main.route("/register/view")
+def register_view():
+    # token = new_csrf_token()
+    success = request.args.get('success')
+    return render_template('sign/signup.html', success=success)
 
 
 @main.route("/login", methods=['POST'])
@@ -61,7 +77,7 @@ def login():
     form = request.form
     u = User.validate_login(form)
     if u is None:
-        return redirect(url_for('.index'))
+        return redirect(url_for('.login_view', success=False))
     else:
         # session 中写入 user_id
         session['user_id'] = u.id
@@ -69,6 +85,19 @@ def login():
         session.permanent = True
         # 转到 topic.index 页面
         return redirect(url_for('topic.index'))
+
+
+@main.route("/login/view")
+def login_view():
+    # token = new_csrf_token()
+    success = request.args.get('success')
+    return render_template('sign/signin.html', success=success)
+
+
+@main.route("/signout")
+def signout():
+    session.pop('user_id')
+    return redirect(url_for('topic.index'))
 
 
 def dict_to_object(form):

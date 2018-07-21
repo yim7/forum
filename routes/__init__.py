@@ -19,11 +19,11 @@ csrf_tokens = dict()
 def csrf_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        token = request.args['token']
+        token = request.form['csrf_token']
         u = current_user()
-        token = Token.one(content=token, user_id=u.id)
-        if token is not None:
-            # csrf_tokens.pop(token)
+        t = Token.one(content=token)
+        if t is not None and t.user_id == u.id:
+            Token.delete(content=token)
             return f(*args, **kwargs)
         else:
             abort(401)

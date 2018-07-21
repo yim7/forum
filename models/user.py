@@ -30,13 +30,10 @@ class User(SQLMixin, db.Model):
     @classmethod
     def register(cls, form):
         name = form.get('username', '')
+        correct_password = form.get('re_password') == form.get('password')
+        correct_name = len(name) > 2 and User.one(username=name) is None
         print('register', form)
-        if len(name) > 2 and User.one(username=name) is None:
-            # 错误，只应该 commit 一次
-            # u = User.new(form)
-            # u.password = u.salted_password(pwd)
-            # User.session.add(u)
-            # User.session.commit()
+        if correct_name and correct_password:
             form['password'] = User.salted_password(form['password'])
             u = User.new(form)
             return u
