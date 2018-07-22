@@ -29,11 +29,12 @@ def generate_fake_date():
         re_password='123'
     )
     u = User.register(form)
-
-    form = dict(
-        title='分享'
-    )
-    b = Board.new(form)
+    boards = ['分享', '问答', '招聘', '客户端测试']
+    for board in boards:
+        form = dict(
+            title=board
+        )
+        b = Board.new(form)
     with open('markdown_demo.md', encoding='utf8') as f:
         content = f.read()
     topic_form = dict(
@@ -41,17 +42,7 @@ def generate_fake_date():
         board_id=b.id,
         content=content
     )
-
-    for i in range(1):
-        print('begin topic <{}>'.format(i))
-        t = Topic.new(topic_form, u.id)
-
-        reply_form = dict(
-            content='reply test',
-            topic_id=t.id,
-        )
-        for j in range(10):
-            Reply.new(reply_form, u.id)
+    Topic.new(topic_form, u.id)
 
 
 if __name__ == '__main__':
