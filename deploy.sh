@@ -3,10 +3,10 @@
 
 set -ex
 
-# 换源
-ln -f -s /var/www/yimclub/misc/sources.list /etc/apt/sources.list
-mkdir -p /root/.pip
-ln -f -s /var/www/yimclub/misc/pip.conf /root/.pip/pip.conf
+# 换源(云服务器不需要)
+# ln -f -s /var/www/yimclub/misc/sources.list /etc/apt/sources.list
+# mkdir -p /root/.pip
+# ln -f -s /var/www/yimclub/misc/pip.conf /root/.pip/pip.conf
 apt-get update
 
 # 系统设置
