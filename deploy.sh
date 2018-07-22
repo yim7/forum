@@ -1,12 +1,12 @@
-# 1. 拉代码到 /var/www/yimclub
+# 1. 拉代码到 /var/www/yim-club
 # 2. 执行 bash deploy.sh
 
 set -ex
 
 # 换源
-ln -f -s /var/www/yimclub/misc/sources.list /etc/apt/sources.list
+ln -f -s /var/www/yim-club/misc/sources.list /etc/apt/sources.list
 mkdir -p /root/.pip
-ln -f -s /var/www/yimclub/misc/pip.conf /root/.pip/pip.conf
+ln -f -s /var/www/yim-club/misc/pip.conf /root/.pip/pip.conf
 apt-get update
 
 # 系统设置
@@ -24,14 +24,14 @@ ufw -f enable
 # 装依赖
 add-apt-repository -y ppa:deadsnakes/ppa
 
-debconf-set-selections /var/www/yimclub/database_secret.conf
+debconf-set-selections /var/www/yim-club/database_secret.conf
 apt-get install -y mysql-server
 
-debconf-set-selections /var/www/yimclub/postfix.conf
+debconf-set-selections /var/www/yim-club/postfix.conf
 apt-get install -y postfix
 
 apt-get install -y git supervisor nginx python3.6 redis-server
-python3.6 /var/www/yimclub/get-pip.py
+python3.6 /var/www/yim-club/get-pip.py
 pip3 install jinja2 flask gevent gunicorn pymysql flask_sqlalchemy flask_mail redis
 
 # 删掉 nginx default 设置
@@ -39,13 +39,13 @@ rm -f /etc/nginx/sites-enabled/default
 rm -f /etc/nginx/sites-available/default
 
 # 建立一个软连接
-ln -s -f /var/www/yimclub/yimclub.conf /etc/supervisor/conf.d/yimclub.conf
+ln -s -f /var/www/yim-club/yimclub.conf /etc/supervisor/conf.d/yimclub.conf
 # 不要再 sites-available 里面放任何东西
-ln -s -f /var/www/yimclub/yimclub.nginx /etc/nginx/sites-enabled/yimclub
-chmod -R o+rwx /var/www/yimclub
+ln -s -f /var/www/yim-club/yimclub.nginx /etc/nginx/sites-enabled/yimclub
+chmod -R o+rwx /var/www/yim-club
 
 # 初始化
-cd /var/www/yimclub
+cd /var/www/yim-club
 python3.6 reset.py
 
 # 重启服务器

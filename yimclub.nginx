@@ -2,11 +2,11 @@ server {
     listen 80;
 
     location /images {
-        alias /var/www/yimclub/images;
+        alias /var/www/yim-club/images;
     }
 
     location /static {
-        alias /var/www/yimclub/static;
+        alias /var/www/yim-club/static;
     }
 
     location / {

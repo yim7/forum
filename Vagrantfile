@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "guavm"
 
   # 映射文件夹
-  config.vm.synced_folder ".", "/var/www/yimclub"
+  config.vm.synced_folder ".", "/var/www/yim-club"
 
   # 桥接网络
   config.vm.network "public_network"
@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     # 换成 root 用户运行
     sudo su
-    bash /var/www/yimclub/deploy.sh
+    bash /var/www/yim-club/deploy.sh
   SHELL
   
 end
