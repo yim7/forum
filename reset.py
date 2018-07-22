@@ -34,12 +34,12 @@ def generate_fake_date():
         form = dict(
             title=board
         )
-        b = Board.new(form)
+        Board.new(form)
     with open('markdown_demo.md', encoding='utf8') as f:
         content = f.read()
     topic_form = dict(
         title='markdown demo',
-        board_id=b.id,
+        board_id=1,
         content=content
     )
     Topic.new(topic_form, u.id)
