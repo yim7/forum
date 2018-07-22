@@ -32,7 +32,10 @@ def index():
 def detail(id):
     m = Topic.get(id)
     # 传递 topic 的所有 reply 到 页面中
-    return render_template("topic/detail.html", topic=m)
+    u = User.one(id=m.user_id)
+    b = m.board()
+    token = new_csrf_token()
+    return render_template("topic/detail.html", topic=m, user=u, board=b, csrf_token=token)
 
 
 @main.route("/delete")

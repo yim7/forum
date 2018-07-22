@@ -10,7 +10,6 @@ from routes import *
 
 from models.board import Board
 
-
 main = Blueprint('board', __name__)
 
 
@@ -24,5 +23,4 @@ def add():
     form = request.form
     u = current_user()
     m = Board.new(form)
-    return redirect(url_for('topic.index'))
-
+    return redirect(url_for('.index'))

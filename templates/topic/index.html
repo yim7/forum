@@ -6,13 +6,13 @@
         <div id="content">
             <div class="panel">
                 <div class="header">
-                    <a href="/topic"
-                       class="topic-tab current-tab">
+                    <a href="/"
+                       class="topic-tab">
                         全部
                     </a>
                     {% for b in bs %}
                         <a href="/topic?board_id={{ b.id }}"
-                           class="topic-tab current-tab">
+                           class="topic-tab">
                             {{ b.title }}
                         </a>
                     {% endfor %}

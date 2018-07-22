@@ -24,8 +24,9 @@ def reset_database():
 
 def generate_fake_date():
     form = dict(
-        username='gua',
+        username='test',
         password='123',
+        re_password='123'
     )
     u = User.register(form)
 

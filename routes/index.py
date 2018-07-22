@@ -14,6 +14,7 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 
+from models.board import Board
 from models.reply import Reply
 from models.topic import Topic
 from models.user import User
@@ -44,7 +45,15 @@ main = Blueprint('index', __name__)
 
 @main.route("/")
 def index():
-    return redirect(url_for('topic.index'))
+    board_id = int(request.args.get('board_id', -1))
+    if board_id == -1:
+        ms = Topic.all()
+    else:
+        ms = Topic.all(board_id=board_id)
+    # token = new_csrf_token()
+    bs = Board.all()
+    u = current_user()
+    return render_template("topic/index.html", user=u, ms=ms, bs=bs, bid=board_id)
 
 
 @main.route("/about")
@@ -83,8 +92,8 @@ def login():
         session['user_id'] = u.id
         # 设置 cookie 有效期为 永久
         session.permanent = True
-        # 转到 topic.index 页面
-        return redirect(url_for('topic.index'))
+        # 转到 .index 页面
+        return redirect(url_for('.index'))
 
 
 @main.route("/login/view")
@@ -97,7 +106,7 @@ def login_view():
 @main.route("/signout")
 def signout():
     session.pop('user_id')
-    return redirect(url_for('topic.index'))
+    return redirect(url_for('.index'))
 
 
 def dict_to_object(form):

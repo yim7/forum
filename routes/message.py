@@ -39,16 +39,17 @@ def add():
 @main.route('/')
 def index():
     u = current_user()
-
-    sent_mail = Messages.all(sender_id=u.id)
-    received_mail = Messages.all(receiver_id=u.id)
-
-    t = render_template(
-        'mail/index.html',
-        send=sent_mail,
-        received=received_mail,
-    )
-    return t
+    if u:
+        sent_mail = Messages.all(sender_id=u.id)
+        received_mail = Messages.all(receiver_id=u.id)
+        t = render_template(
+            'mail/index.html',
+            send=sent_mail,
+            received=received_mail,
+        )
+        return t
+    else:
+        return redirect(url_for('index.index'))
 
 
 @main.route('/view/<int:id>')

@@ -1,6 +1,6 @@
 import hashlib
 
-from sqlalchemy import Column, String, Text
+from sqlalchemy import Column, String, Enum
 
 import secret
 from models.base_model import SQLMixin, db
@@ -17,10 +17,10 @@ class User(SQLMixin, db.Model):
     image = Column(String(100), nullable=False, default='/images/default_avatar.jpg')
     signature = Column(String(100), nullable=False, default='这家伙很懒，什么个性签名都没有留下。')
     email = Column(String(50), nullable=False, default=secret.test_mail)
+    role = Column(Enum('normal', 'admin'), nullable=False, default='normal')
 
-    def add_default_value(self):
-        super().add_default_value()
-        self.password = self.salted_password(self.password)
+    def is_admin(self):
+        return self.role == 'admin'
 
     @staticmethod
     def salted_password(password, salt='$!@><?>HUI&DWQa`'):
