@@ -16,7 +16,9 @@
                              title={{ user.username }}>
                     </div>
                     <a class="dark">{{ user.username }}</a>
-                    <p class="col_fade">注册时间 1 年前</p>
+                    <p class="col_fade">注册时间 <span class="created-time"
+                                                   data-created_time="{{ user.created_time }}"></span>
+                    </p>
                 </div>
             </div>
 
@@ -48,7 +50,8 @@
                                href="{{ url_for('topic.detail', id=t.id, _anchor=t.replies() | count) }}">
                                 <img class="user_small_avatar"
                                      src="{{ replier.image }}">
-                                <span class="last_active_time">1 小时前</span>
+                                <span class="last_active_time created-time"
+                                      data-created_time="{{ r.created_time }}"></span>
                             </a>
                         {% endif %}
                         <div class="topic_title_wrapper">
@@ -93,7 +96,8 @@
                                href="{{ url_for('topic.detail', id=t.id, _anchor=t.replies()|count) }}">
                                 <img class="user_small_avatar"
                                      src="{{ replier.image }}">
-                                <span class="last_active_time">3 天前</span>
+                                <span class="last_active_time created-time"
+                                      data-created_time="{{ r.created_time }}"></span>
                             </a>
                         {% endif %}
                         <div class="topic_title_wrapper">

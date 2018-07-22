@@ -7,7 +7,6 @@
             <div class="panel">
                 <div class="inner post">
                     <form id="create_topic_form" method="post" action="{{ url_for('.add') }}">
-                        <!--<form id="create_topic_form" method="post" action="{{ url_for('.add') }}">-->
                         <fieldset>
                             <textarea autofocus class='span9' id='title' name='title' rows='1'
                                       placeholder="标题字数 10 字以上"></textarea>
@@ -38,11 +37,5 @@
             </div>
         </div>
     </div>
-    <script>
-        (function () {
-            var editor = new Editor();
-            editor.render($('.editor')[0]);
-        })();
-    </script>
 
 {% endblock %}
