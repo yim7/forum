@@ -24,7 +24,7 @@
 | 表格 | 表格 |
 
 
-图片： ![图片](https://vip.kybmig.cc/uploads/avatar/2017090517-74X25272-286f-4aba-8f62-005188ffd4bd.jpg)
+图片： ![图片](https://github.com/yim7/yim-club/blob/master/images/48269843_p0.jpg?raw=true)
 
 
 

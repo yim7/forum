@@ -15,7 +15,7 @@ class User(SQLMixin, db.Model):
     username = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
     image = Column(String(100), nullable=False, default='/images/default_avatar.png')
-    signature = Column(String(100), nullable=False, default='人生苦短，我用 Python。')
+    signature = Column(String(100), nullable=False, default='Life is short, you need Python!')
     email = Column(String(50), nullable=False, default=secret.test_mail)
     role = Column(Enum('normal', 'admin'), nullable=False, default='normal')
 
