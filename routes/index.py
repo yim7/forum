@@ -41,7 +41,8 @@ def index():
         ms = Topic.all()
     else:
         ms = Topic.all(board_id=board_id)
-
+        
+    ms.sort(key=lambda x: x.created_time, reverse=True)
     bs = Board.all()
     u = current_user()
     return render_template("topic/index.html", user=u, ms=ms, bs=bs, bid=board_id)

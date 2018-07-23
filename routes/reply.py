@@ -34,7 +34,7 @@ def send_mails(sender, receivers, content):
     print('send_mail', sender, receivers, content)
     for r in receivers:
         form = dict(
-            title='你被 {} AT 了'.format(sender.username),
+            title='你被 {} @ 了'.format(sender.username),
             content=content,
             sender_id=sender.id,
             receiver_id=r.id

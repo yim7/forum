@@ -53,7 +53,13 @@
                                 <span class="last_active_time created-time"
                                       data-created_time="{{ r.created_time }}"></span>
                             </a>
+                        {% else %}
+                            <span class='last_time pull-right'>
+                                  <span class="last_active_time created-time"
+                                        data-created_time="{{ t.created_time }}"></span>
+                            </span>
                         {% endif %}
+
                         <div class="topic_title_wrapper">
                             {#                    <span class="put_good">精华</span>#}
                             <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}"
