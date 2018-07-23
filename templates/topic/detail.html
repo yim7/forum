@@ -19,7 +19,7 @@
                         {{ topic.views }} 次浏览
                         </span>
                         <span>
-                        来自<a href="{{ url_for('.index',board_id=board.id) }}">{{ board.title }}</a>
+                        来自<a href="{{ url_for('index.index',board_id=board.id) }}">{{ board.title }}</a>
                         </span>
                     </div>
                     <div id="manage_topic">

@@ -28,7 +28,7 @@ def delete():
     id = int(request.args.get('id'))
     Topic.delete(id)
 
-    return redirect(url_for('.index'))
+    return redirect(url_for('index.index'))
 
 
 @main.route("/new")
@@ -46,4 +46,4 @@ def add():
     u = current_user()
     Topic.new(form, user_id=u.id)
     update_created_topic_cache(u.id)
-    return redirect(url_for('.index'))
+    return redirect(url_for('index.index'))
