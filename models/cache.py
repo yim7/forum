@@ -5,7 +5,14 @@ import redis
 from models.reply import Reply
 from models.topic import Topic
 
-cache = redis.StrictRedis()
+
+def cache_init():
+    cache = redis.StrictRedis()
+    cache.flushdb()
+    return cache
+
+
+cache = cache_init()
 
 
 def dict_to_object(form):
