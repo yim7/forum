@@ -1,16 +1,13 @@
 from flask import (
-    render_template,
-    request,
-    redirect,
-    url_for,
     Blueprint,
 )
 
-from models.message import Messages
 from routes import *
 
-from models.reply import Reply
+from models.message import Messages
+from models.cache import update_replied_topic_cache
 
+from models.reply import Reply
 
 main = Blueprint('reply', __name__)
 
@@ -47,6 +44,7 @@ def send_mails(sender, receivers, content):
 
 @main.route("/add", methods=["POST"])
 @login_required
+@csrf_required
 def add():
     form = request.form
     u = current_user()
@@ -56,5 +54,5 @@ def add():
     send_mails(u, users, content)
     form = form.to_dict()
     m = Reply.new(form, user_id=u.id)
+    update_replied_topic_cache(u.id)
     return redirect(url_for('topic.detail', id=m.topic_id))
-

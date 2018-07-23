@@ -42,13 +42,13 @@ class Topic(SQLMixin, db.Model):
     @classmethod
     def replied_topic(cls, user_id):
         replies = Reply.query.filter_by(user_id=user_id).order_by(desc(Reply.created_time)).all()
-        topic_id = [r.topic_id for r in replies]
+
         replied_topics = []
-        for _id in topic_id:
-            t = cls.one(id=_id)
+        for r in replies:
+            t = cls.one(id=r.topic_id)
             if t not in replied_topics:
                 replied_topics.append(t)
-        print("replied", replied_topics)
+
         return replied_topics
 
     def user(self):

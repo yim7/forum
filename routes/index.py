@@ -8,38 +8,29 @@ from flask import (
     session,
     url_for,
     Blueprint,
-    make_response,
     abort,
     send_from_directory
 )
-from werkzeug.utils import secure_filename
 
 from models.board import Board
-from models.reply import Reply
 from models.topic import Topic
 from models.user import User
+from models.cache import created_topic, replied_topic
 from routes import (
     current_user,
     new_csrf_token,
     csrf_required,
+    login_required
 )
-import json
-
-import redis
-
-cache = redis.StrictRedis()
-
-from utils import log
 
 main = Blueprint('index', __name__)
 
 """
-用户在这里可以
+主页路由
     访问首页
     注册
     登录
-
-用户登录后, 会写入 session, 并且定向到 /profile
+    头像
 """
 
 
@@ -50,7 +41,7 @@ def index():
         ms = Topic.all()
     else:
         ms = Topic.all(board_id=board_id)
-    # token = new_csrf_token()
+
     bs = Board.all()
     u = current_user()
     return render_template("topic/index.html", user=u, ms=ms, bs=bs, bid=board_id)
@@ -63,9 +54,9 @@ def about():
 
 
 @main.route("/register", methods=['POST'])
+@csrf_required
 def register():
     form = request.form.to_dict()
-    # 用类函数来判断
     u = User.register(form)
     if u is None:
         result = False
@@ -76,12 +67,13 @@ def register():
 
 @main.route("/register/view")
 def register_view():
-    # token = new_csrf_token()
+    token = new_csrf_token()
     success = request.args.get('success')
-    return render_template('sign/signup.html', success=success)
+    return render_template('sign/signup.html', success=success, csrf_token=token)
 
 
 @main.route("/login", methods=['POST'])
+@csrf_required
 def login():
     form = request.form
     u = User.validate_login(form)
@@ -92,74 +84,21 @@ def login():
         session['user_id'] = u.id
         # 设置 cookie 有效期为 永久
         session.permanent = True
-        # 转到 .index 页面
         return redirect(url_for('.index'))
 
 
 @main.route("/login/view")
 def login_view():
-    # token = new_csrf_token()
+    token = new_csrf_token()
     success = request.args.get('success')
-    return render_template('sign/signin.html', success=success)
+    return render_template('sign/signin.html', success=success, csrf_token=token)
 
 
 @main.route("/signout")
+@login_required
 def signout():
     session.pop('user_id')
     return redirect(url_for('.index'))
-
-
-def dict_to_object(form):
-    t = Topic()
-    for name, value in form.items():
-        setattr(t, name, value)
-    # print('test dict to object',t.user().username)
-    return t
-
-
-def created_topic(user_id):
-    # O(n)
-    # ts = Topic.all(user_id=user_id)
-    # return ts
-    k = 'created_topic_{}'.format(user_id)
-    if cache.exists(k):
-        v = cache.get(k)
-        ts = json.loads(v)
-        ts = [dict_to_object(t) for t in ts]
-        return ts
-    else:
-        ts = Topic.all(user_id=user_id)
-        v = json.dumps([t.json() for t in ts])
-        cache.set(k, v)
-        return ts
-
-
-def replied_topic(user_id):
-    # O(m*n)
-    # rs = Reply.all(user_id=user_id)
-    # ts = []
-    # for r in rs:
-    #     t = Topic.one(id=r.topic_id)
-    #     ts.append(t)
-    # return ts
-
-    k = 'replied_topic_{}'.format(user_id)
-    if cache.exists(k):
-        v = cache.get(k)
-        ts = json.loads(v)
-        ts = [dict_to_object(t) for t in ts]
-        return ts
-    else:
-        rs = Reply.all(user_id=user_id)
-        ts = []
-        for r in rs:
-            t = Topic.one(id=r.topic_id)
-            ts.append(t)
-
-        v = json.dumps([t.json() for t in ts])
-        cache.set(k, v)
-
-        return ts
 
 
 @main.route('/profile')
@@ -196,10 +135,11 @@ def user_detail(id):
     if u is None:
         abort(404)
     else:
-        created = Topic.created_topic(user_id=u.id)
-        replied = Topic.replied_topic(user_id=u.id)
-        # created = created_topic(u.id)
-        # replied = replied_topic(u.id)
+        # created = Topic.created_topic(user_id=u.id)
+        # replied = Topic.replied_topic(user_id=u.id)
+
+        created = created_topic(u.id)
+        replied = replied_topic(u.id)
         return render_template(
             'user/index.html',
             user=u,
@@ -209,11 +149,10 @@ def user_detail(id):
 
 
 @main.route('/image/add', methods=['POST'])
+@csrf_required
 def avatar_add():
     file = request.files['avatar']
 
-    # ../../root/.ssh/authorized_keys
-    # filename = secure_filename(file.filename)
     suffix = file.filename.split('.')[-1]
     filename = '{}.{}'.format(str(uuid.uuid4()), suffix)
     path = os.path.join('images', filename)
