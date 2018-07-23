@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 1. 拉代码到 /var/www/yim-club
 # 2. 执行 bash deploy.sh
 

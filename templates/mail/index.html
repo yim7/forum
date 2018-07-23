@@ -17,7 +17,7 @@
                             <span>
                                 <a href="/user/{{ r.sender_id }}" target='_blank'>{{ r.sender().username }}</a>
                                 发送给你：
-                                <a href="{{ url_for('.view', id = r.id) }}"> {{ r.content }}</a>
+                                <a href="{{ url_for('.view', id = r.id) }}"> {{ r.title }}</a>
                             </span>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                                 你发送给
                                 <a href="/user/{{ s.receiver_id }}" target='_blank'>{{ s.receiver().username }}</a>
                                 ：
-                                <a href="{{ url_for('.view', id = s.id) }}"> {{ s.content }}</a>
+                                <a href="{{ url_for('.view', id = s.id) }}"> {{ s.title }}</a>
                             </span>
                         </div>
                     </div>
@@ -73,25 +73,3 @@
 
 {% endblock %}
 
-
-<p>发送邮件</p>
-{% for s in send %}
-    <div>
-        <a href="{{ url_for('.view', id = s.id) }}"> {{ s.title }}</a>
-    </div>
-{% endfor %}
-
-
-
-<div class='panel'>
-    <div class='header'>
-        <span class='col_fade'>过往信息</span>
-    </div>
-    <% if (typeof(has_read_messages) !== 'undefined' && has_read_messages.length > 0) { %>
-    <%- partial('../message/message', { collection: has_read_messages, as: 'message' }) %>
-    <% } else { %>
-    <div class='inner'>
-        <p>无消息</p>
-    </div>
-    <% } %>
-</div>

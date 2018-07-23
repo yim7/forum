@@ -1,8 +1,5 @@
 from flask import (
     render_template,
-    request,
-    redirect,
-    url_for,
     Blueprint,
 )
 
@@ -23,6 +20,6 @@ def index():
 @admin_required
 def add():
     form = request.form
-    u = current_user()
-    m = Board.new(form)
+
+    Board.new(form)
     return redirect(url_for('.index'))
