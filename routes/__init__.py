@@ -48,7 +48,7 @@ def csrf_required(f):
         print("token", token)
         u = current_user()
         t = Token.one(content=token)
-        if t is not None and t.user_id == u.id:
+        if t is not None and (t.user_id is None or t.user_id == u.id):
             Token.delete(content=token)
             return f(*args, **kwargs)
         else:
@@ -60,9 +60,14 @@ def csrf_required(f):
 def new_csrf_token():
     u = current_user()
     token = str(uuid.uuid4())
-    form = dict(
-        content=token,
-        user_id=u.id
-    )
+    if u:
+        form = dict(
+            content=token,
+            user_id=u.id
+        )
+    else:
+        form = dict(
+            content=token,
+        )
     Token.new(form)
     return token
