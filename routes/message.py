@@ -18,17 +18,18 @@ mail = Mail()
 @csrf_required
 def add():
     form = request.form.to_dict()
-    form['receiver_id'] = int(form['receiver_id'])
     u = current_user()
     form['sender_id'] = u.id
 
-    r = User.one(id=form['receiver_id'])
+    r = User.one(username=form['receiver_name'])
+    form['receiver_id'] = r.id
     m = Message(
         subject=form['title'],
         body=form['content'],
         sender=admin_mail,
         recipients=[r.email]
     )
+    print('email information', m)
     mail.send(m)
 
     Messages.new(form)
