@@ -54,7 +54,7 @@ def csrf_required(f):
         u = current_user()
         t = Token.one(content=token)
         log("verify token", t)
-        if t is not None and t.user_id in [None, u.id]:
+        if t is not None and (t.user_id is None or t.user_id == u.id):
             Token.delete(content=token)
             return f(*args, **kwargs)
         else:
