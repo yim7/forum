@@ -15,9 +15,9 @@ def reset_database():
     e = create_engine(url, echo=True)
 
     with e.connect() as c:
-        c.execute('DROP DATABASE IF EXISTS yimclub')
-        c.execute('CREATE DATABASE yimclub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci')
-        c.execute('USE yimclub')
+        c.execute('DROP DATABASE IF EXISTS {}'.format(secret.database_name))
+        c.execute('CREATE DATABASE {} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'.format(secret.database_name))
+        c.execute('USE {}'.format(secret.database_name))
 
     db.metadata.create_all(bind=e)
 
