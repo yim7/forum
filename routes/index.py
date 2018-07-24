@@ -104,13 +104,11 @@ def signout():
 
 
 @main.route('/profile')
+@login_required
 def profile():
     u = current_user()
-    if u is None:
-        return redirect(url_for('.index'))
-    else:
-        token = new_csrf_token()
-        return render_template('user/profile.html', user=u, csrf_token=token)
+    token = new_csrf_token()
+    return render_template('user/profile.html', user=u, csrf_token=token)
 
 
 @main.route('/setting', methods=['POST'])
