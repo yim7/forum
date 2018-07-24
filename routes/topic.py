@@ -27,13 +27,14 @@ def detail(id):
 def delete(id):
     t = Topic.one(id=id)
     u = current_user()
-    if u.id == t.user_id:
+    if u.id == t.user_id or u.is_admin():
         Topic.delete(id)
-
+    update_created_topic_cache(t.user_id)
     return redirect(url_for('index.index'))
 
 
 @main.route("/new")
+@login_required
 def new():
     board_id = int(request.args.get('board_id', -1))
     bs = Board.all()
