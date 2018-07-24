@@ -21,12 +21,14 @@ def detail(id):
     return render_template("topic/detail.html", topic=m, user=u, board=b, csrf_token=token)
 
 
-@main.route("/delete")
+@main.route("/<int:id>/delete")
 @csrf_required
-@admin_required
-def delete():
-    id = int(request.args.get('id'))
-    Topic.delete(id)
+@login_required
+def delete(id):
+    t = Topic.one(id=id)
+    u = current_user()
+    if u.id == t.user_id:
+        Topic.delete(id)
 
     return redirect(url_for('index.index'))
 
