@@ -8,6 +8,7 @@ from models.message import Messages
 from models.cache import update_replied_topic_cache
 
 from models.reply import Reply
+from utils import log
 
 main = Blueprint('reply', __name__)
 
@@ -23,7 +24,7 @@ def users_from_content(content):
         if p.startswith('@'):
             username = p[1:]
             u = User.one(username=username)
-            print('users_from_content <{}> <{}> <{}>'.format(username, p, parts))
+            log('users_from_content <{}> <{}> <{}>'.format(username, p, parts))
             if u is not None:
                 users.append(u)
 
@@ -31,7 +32,7 @@ def users_from_content(content):
 
 
 def send_mails(sender, receivers, content):
-    print('send_mail', sender, receivers, content)
+    log('send_mail', sender, receivers, content)
     for r in receivers:
         form = dict(
             title='你被 {} @ 了'.format(sender.username),

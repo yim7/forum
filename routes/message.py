@@ -8,6 +8,7 @@ from routes import *
 
 from models.message import Messages
 from secret import admin_mail
+from utils import log
 
 main = Blueprint('mail', __name__)
 mail = Mail()
@@ -29,7 +30,6 @@ def add():
         sender=admin_mail,
         recipients=[r.email]
     )
-    print('email information', m)
     mail.send(m)
 
     Messages.new(form)

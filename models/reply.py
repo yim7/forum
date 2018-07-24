@@ -1,5 +1,3 @@
-import time
-
 from sqlalchemy import Column, Integer, UnicodeText
 
 from models.base_model import db, SQLMixin
@@ -7,7 +5,6 @@ from models.user import User
 
 
 class Reply(SQLMixin, db.Model):
-
     content = Column(UnicodeText, nullable=False)
     topic_id = Column(Integer, nullable=False)
     user_id = Column(Integer, nullable=False)

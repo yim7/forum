@@ -1,5 +1,3 @@
-import time
-
 from sqlalchemy import Column, Unicode, UnicodeText, Integer
 
 from models.base_model import SQLMixin, db

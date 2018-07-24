@@ -16,8 +16,8 @@ def configured_app():
     # 设置 secret_key 来使用 flask 自带的 session
     app.secret_key = secret.secret_key
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:{}@localhost/yimclub?charset=utf8mb4'.format(
-        secret.database_password
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:{}@localhost/{}?charset=utf8mb4'.format(
+        secret.database_password, secret.database_name
     )
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
@@ -43,8 +43,7 @@ def register_routes(app):
 
 if __name__ == '__main__':
     app = configured_app()
-    # debug 模式可以自动加载你对代码的变动, 所以不用重启程序
-    # host 参数指定为 '0.0.0.0' 可以让别的机器访问你的代码
+    # debug 模式可以自动加载, 修改代码不用重启程序
     # 自动 reload Jinja2
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.jinja_env.auto_reload = True

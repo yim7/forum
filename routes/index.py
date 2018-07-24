@@ -22,6 +22,7 @@ from routes import (
     csrf_required,
     login_required
 )
+from utils import log
 
 main = Blueprint('index', __name__)
 
@@ -117,16 +118,15 @@ def profile():
 def setting():
     form = request.form.to_dict()
     u = current_user()
-    if 'old_pass' in form:
+    if 'new_pass' in form:
         old = form['old_pass']
         new = form['new_pass']
         if u.password == User.salted_password(old):
             User.update(u.id, password=User.salted_password(new))
-            print('修改密码成功')
         else:
-            print('原密码错误')
+            log('旧密码错误')
     else:
-        User.update(u.id, **form)
+        User.update(u.id, signature=form['signature'])
     return redirect(url_for('.profile'))
 
 
@@ -139,6 +139,7 @@ def user_detail(id):
         # created = Topic.created_topic(user_id=u.id)
         # replied = Topic.replied_topic(user_id=u.id)
 
+        # 用 Redis 缓存
         created = created_topic(u.id)
         replied = replied_topic(u.id)
         return render_template(

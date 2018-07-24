@@ -10,6 +10,7 @@ from flask import (
 )
 from models.token import Token
 from models.user import User
+from utils import log
 
 
 def current_user():
@@ -25,6 +26,7 @@ def admin_required(f):
         if u and u.is_admin():
             return f(*args, **kwargs)
         else:
+            log('admin_required')
             abort(401)
 
     return wrapper
@@ -36,6 +38,7 @@ def login_required(f):
         if current_user():
             return f(*args, **kwargs)
         else:
+            log("login_required")
             return redirect(url_for('index.login_view'))
 
     return wrapper
@@ -45,7 +48,7 @@ def csrf_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         token = request.form['_csrf']
-        print("token", token)
+        log("verify token", token)
         u = current_user()
         t = Token.one(content=token)
         if t is not None and (t.user_id is None or t.user_id == u.id):

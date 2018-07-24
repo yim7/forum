@@ -4,14 +4,10 @@ from sqlalchemy import Column, String, Enum
 
 import secret
 from models.base_model import SQLMixin, db
+from utils import log
 
 
 class User(SQLMixin, db.Model):
-    __tablename__ = 'User'
-    """
-    User 是一个保存用户数据的 model
-    现在只有两个属性 username 和 password
-    """
     username = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
     image = Column(String(100), nullable=False, default='/images/default_avatar.png')
@@ -32,12 +28,12 @@ class User(SQLMixin, db.Model):
         name = form.get('username', '')
         correct_password = form.get('re_password') == form.get('password')
         correct_name = len(name) > 2 and User.one(username=name) is None
-        print('register', form)
         if correct_name and correct_password:
             form['password'] = User.salted_password(form['password'])
             u = User.new(form)
             return u
         else:
+            log('register fail')
             return None
 
     @classmethod
@@ -46,5 +42,4 @@ class User(SQLMixin, db.Model):
             username=form['username'],
             password=User.salted_password(form['password']),
         )
-        print('validate_login', form, query)
         return User.one(**query)

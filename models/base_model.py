@@ -1,6 +1,5 @@
 import time
 
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String
 
@@ -25,9 +24,6 @@ class SQLMixin(object):
 
     @classmethod
     def update(cls, id, **kwargs):
-        # u.username = 'test'
-        # db.session.add(u)
-        # db.session.commit()
         m = cls.query.filter_by(id=id).first()
         for name, value in kwargs.items():
             setattr(m, name, value)
@@ -55,12 +51,6 @@ class SQLMixin(object):
         return cls.__mapper__.c.items()
 
     def __repr__(self):
-        """
-        __repr__ 是一个魔法方法
-        简单来说, 它的作用是得到类的 字符串表达 形式
-        比如 print(u) 实际上是 print(u.__repr__())
-        不明白就看书或者 搜
-        """
         name = self.__class__.__name__
         s = ''
         for attr, column in self.columns():
@@ -73,32 +63,10 @@ class SQLMixin(object):
         db.session.add(self)
         db.session.commit()
 
-    # def json(self):
-    #     d = dict()
-    #     for attr, column in self.columns():
-    #         if hasattr(self, attr):
-    #             v = getattr(self, attr)
-    #             d[attr] = v
-    #     return d
-
     def json(self):
-        _dict = self.__dict__
-        _dict.pop('_sa_instance_state')
-        return _dict
-
-
-class SimpleUser(SQLMixin, db.Model):
-    username = Column(String(50), nullable=False)
-    password = Column(String(50), nullable=False)
-
-
-if __name__ == '__main__':
-    db.create_all()
-    form = dict(
-        username='123',
-        password='456',
-    )
-    u = SimpleUser.new(form)
-    print(u)
-    u = SimpleUser.one(username='123')
-    print(u)
+        d = dict()
+        for attr, column in self.columns():
+            if hasattr(self, attr):
+                v = getattr(self, attr)
+                d[attr] = v
+        return d

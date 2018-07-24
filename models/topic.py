@@ -1,6 +1,4 @@
-import time
-
-from sqlalchemy import String, Integer, Column, Text, UnicodeText, Unicode, desc
+from sqlalchemy import Integer, Column, UnicodeText, Unicode, desc
 
 from models.base_model import SQLMixin, db
 from models.board import Board
