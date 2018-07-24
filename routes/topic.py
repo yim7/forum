@@ -21,7 +21,7 @@ def detail(id):
     return render_template("topic/detail.html", topic=m, user=u, board=b, csrf_token=token)
 
 
-@main.route("/<int:id>/delete")
+@main.route("/delete/<int:id>")
 @csrf_required
 @login_required
 def delete(id):

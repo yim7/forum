@@ -25,7 +25,7 @@
                     <div id="manage_topic">
                         {% set current = current_user() %}
                         {% if current and current.is_admin() %}
-                            <a href='/topic/{{ topic.id }}/top' data-method="post">
+                            <a href='/topic/top/{{ topic.id }}' data-method="post">
                                 {% if topic.top %}
                                     <i class="fa fa-lg fa-star-o" title='取消置顶'></i>
                                 {% else %}
@@ -33,7 +33,7 @@
                                 {% endif %}
                             </a>
 
-                            <a href='/topic/{{ topic.id }}/good' data-method="post">
+                            <a href='/topic/good/{{ topic.id }}' data-method="post">
                                 {% if topic.good %}
                                     <i class="fa fa-lg fa-heart-o" title="取消精华"></i>
                                 {% else %}
@@ -41,22 +41,22 @@
                                 {% endif %}
                             </a>
 
-                            <a href='/topic/{{ topic.id }}/lock' data-method="post">
+                            <a href='/topic/lock/{{ topic.id }}' data-method="post">
                                 {% if topic.lock %}
                                     <i class="fa fa-lg fa-unlock" title='取消锁定'></i>
                                 {% else %}
                                     <i class="fa fa-lg fa-lock" title='锁定（不可再回复）'/></i>
                                 {% endif %}
                             </a>
-                            <a href='/topic/{{ topic.id }}/edit'>
+                            <a href='/topic/edit/{{ topic.id }}'>
                                 <i class="fa fa-lg fa-pencil-square-o" title='编辑'></i></a>
-                            <a href='/topic/{{ topic.id }}/delete'>
+                            <a href='/topic/delete/{{ topic.id }}'>
                                 <i class="fa fa-lg fa-trash" title='删除'></i></a>
                         {% endif %}
                         {% if current and  current.id == user.id %}
-                            <a href='/topic/{{ topic.id }}/edit'>
+                            <a href='/topic/edit/{{ topic.id }}'>
                                 <i class="fa fa-lg fa-pencil-square-o" title='编辑'></i></a>
-                            <a href='/topic/{{ topic.id }}/delete'>
+                            <a href='/topic/delete/{{ topic.id }}'>
                                 <i class="fa fa-lg fa-trash" title='删除'></i></a>
                         {% endif %}
                     </div>
@@ -92,10 +92,10 @@
                             </div>
                             <div class='user_action'>
                                 {% if current and current.is_admin() %}
-                                    <a href='/reply/{{ r.id }}/edit' class='edit_reply_btn'>
+                                    <a href='/reply/edit/{{ r.id }}' class='edit_reply_btn'>
                                         <i class="fa fa-pencil-square-o" title='编辑'></i>
                                     </a>
-                                    <a href='/reply/{{ r.id }}/delete' class='delete_reply_btn'>
+                                    <a href='/reply/delete/{{ r.id }}' class='delete_reply_btn'>
                                         <i class="fa fa-trash" title='删除'></i>
                                     </a>
                                     <span>
