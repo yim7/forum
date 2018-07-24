@@ -56,7 +56,7 @@
                         {% if current and  current.id == user.id %}
                             <a href='/topic/edit/{{ topic.id }}'>
                                 <i class="fa fa-lg fa-pencil-square-o" title='编辑'></i></a>
-                            <a href='/topic/delete/{{ topic.id }}'>
+                            <a href='{{ url_for('topic.delete',topic.id,csrf_token) }}'>
                                 <i class="fa fa-lg fa-trash" title='删除'></i></a>
                         {% endif %}
                     </div>

@@ -47,11 +47,14 @@ def login_required(f):
 def csrf_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        token = request.form['_csrf']
-        log("verify token", token)
+        if '_csrf' in request.form:
+            token = request.form['_csrf']
+        else:
+            token = request.args['_csrf']
         u = current_user()
         t = Token.one(content=token)
-        if t is not None and (t.user_id is None or t.user_id == u.id):
+        log("verify token", t)
+        if t is not None and t.user_id in [None, u.id]:
             Token.delete(content=token)
             return f(*args, **kwargs)
         else:
