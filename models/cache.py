@@ -30,7 +30,7 @@ def created_topic(user_id):
         ts = [dict_to_object(t) for t in ts]
         return ts
     else:
-        ts = Topic.all(user_id=user_id)
+        ts = Topic.created_topic(user_id=user_id)
         v = json.dumps([t.json() for t in ts])
         cache.set(k, v)
         return ts
@@ -44,15 +44,9 @@ def replied_topic(user_id):
         ts = [dict_to_object(t) for t in ts]
         return ts
     else:
-        rs = Reply.all(user_id=user_id)
-        ts = []
-        for r in rs:
-            t = Topic.one(id=r.topic_id)
-            ts.append(t)
-
+        ts = Topic.replied_topic(user_id=user_id)
         v = json.dumps([t.json() for t in ts])
         cache.set(k, v)
-
         return ts
 
 
