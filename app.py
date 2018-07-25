@@ -9,6 +9,7 @@ from routes.reply import main as reply_routes
 from routes.board import main as board_routes
 from routes.message import main as mail_routes, mail
 from routes import current_user
+from routes.admin import admin
 
 
 def configured_app():
@@ -22,6 +23,7 @@ def configured_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
     mail.init_app(app)
+    admin.init_app(app)
 
     register_routes(app)
     return app
