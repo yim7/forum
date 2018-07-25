@@ -22,8 +22,8 @@ def detail(id):
 
 
 @main.route("/delete/<int:id>")
-@csrf_required
 @login_required
+@csrf_required
 def delete(id):
     t = Topic.one(id=id)
     u = current_user()
@@ -43,6 +43,7 @@ def new():
 
 
 @main.route("/add", methods=["POST"])
+@login_required
 @csrf_required
 def add():
     form = request.form.to_dict()
@@ -54,15 +55,18 @@ def add():
 
 @main.route("/edit/<int:id>", methods=['GET', 'POST'])
 @login_required
+@csrf_required
 def edit(id):
-    if request.method == 'GET':
-        bs = Board.all()
-        token = new_csrf_token()
-        t = Topic.one(id=id)
-        return render_template("topic/edit.html", topic=t, bs=bs, csrf_token=token, bid=t.board_id)
-    else:
-        form = request.form
-        Topic.update(id, **form)
-        u = current_user()
-        update_created_topic_cache(u.id)
-        return redirect(url_for('.detail', id=id))
+    u = current_user()
+    t = Topic.one(id=id)
+
+    if u.id == t.user_id or u.is_admin():
+        if request.method == 'GET':
+            bs = Board.all()
+            token = new_csrf_token()
+            return render_template("topic/edit.html", topic=t, bs=bs, csrf_token=token, bid=t.board_id)
+        else:
+            form = request.form
+            Topic.update(id, **form)
+            update_created_topic_cache(t.id)
+            return redirect(url_for('.detail', id=id))
