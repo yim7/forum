@@ -26,7 +26,8 @@ def generate_fake_date():
     form = dict(
         username='test',
         password='123',
-        re_password='123'
+        re_password='123',
+        role='admin'
     )
     u = User.register(form)
     boards = ['分享', '问答', '招聘', '客户端测试']
