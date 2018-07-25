@@ -27,13 +27,19 @@
                     <span class="col_fade">最近创建的话题</span>
                 </div>
 
-                {% for t in created %}
-                    {% set u =t.user() %}
-                    {% include 'topic/abstract.html' %}
-                {% endfor %}
-                {#            <div class="cell more">#}
-                {#                <a class="dark" href="/user/justjavac/topics">查看更多»</a>#}
-                {#            </div>#}
+                {% if created %}
+                    {% for t in created %}
+                        {% set u = t.user() %}
+                        {% include 'topic/abstract.html' %}
+                        {#            <div class="cell more">#}
+                        {#                <a class="dark" href="/user/justjavac/replies">查看更多»</a>#}
+                        {#            </div>#}
+                    {% endfor %}
+                {% else %}
+                    <div class='inner'>
+                        <p>无话题</p>
+                    </div>
+                {% endif %}
 
             </div>
 
@@ -41,14 +47,20 @@
                 <div class="header">
                     <span class="col_fade">最近参与的话题</span>
                 </div>
+                {% if replied %}
+                    {% for t in replied %}
+                        {% set u = t.user() %}
+                        {% include 'topic/abstract.html' %}
+                        {#            <div class="cell more">#}
+                        {#                <a class="dark" href="/user/justjavac/replies">查看更多»</a>#}
+                        {#            </div>#}
+                    {% endfor %}
+                {% else %}
+                    <div class='inner'>
+                        <p>无话题</p>
+                    </div>
+                {% endif %}
 
-                {% for t in replied %}
-                    {% set u = t.user() %}
-                    {% include 'topic/abstract.html' %}
-                    {#            <div class="cell more">#}
-                    {#                <a class="dark" href="/user/justjavac/replies">查看更多»</a>#}
-                    {#            </div>#}
-                {% endfor %}
             </div>
         </div>
     </div>

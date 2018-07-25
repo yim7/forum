@@ -50,3 +50,19 @@ def add():
     Topic.new(form, user_id=u.id)
     update_created_topic_cache(u.id)
     return redirect(url_for('index.index'))
+
+
+@main.route("/edit/<int:id>", methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    if request.method == 'GET':
+        bs = Board.all()
+        token = new_csrf_token()
+        t = Topic.one(id=id)
+        return render_template("topic/edit.html", topic=t, bs=bs, csrf_token=token, bid=t.board_id)
+    else:
+        form = request.form
+        Topic.update(id, **form)
+        u = current_user()
+        update_created_topic_cache(u.id)
+        return redirect(url_for('.detail', id=id))

@@ -25,6 +25,7 @@ class SQLMixin(object):
     @classmethod
     def update(cls, id, **kwargs):
         m = cls.query.filter_by(id=id).first()
+        m.updated_time = time.time()
         for name, value in kwargs.items():
             setattr(m, name, value)
 
