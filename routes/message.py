@@ -59,6 +59,6 @@ def view(id):
     mail = Messages.one(id=id)
     u = current_user()
     if u.id in [mail.receiver_id, mail.sender_id]:
-        return render_template('mail/detail.html', mail=mail)
+        return render_template('mail/detail.html', mail=mail, user=u)
     else:
         return redirect(url_for('.index'))

@@ -1,15 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>邮件详情</title>
-</head>
-<body>
-
-<p>发件人 id: {{ mail.sender_id }}</p>
-<p>收件人 id: {{ mail.receiver_id }}</p>
-<p>内容</p>
-<p>{{ mail.content }}</p>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}消息详情{% endblock %}
+{% block main %}
+    <div id="main">
+        {% include 'sidebar.html' %}
+        <div id='content'>
+            <div class='panel'>
+                <div class='header topic_header'>
+                    <span class="topic_full_title">{{ mail.title }}</span>
+                    <div class="changes">
+                        <p>
+                            发件人：
+                            <a href="{{ url_for('index.user_detail',id=mail.sender_id) }}">
+                                <strong>{{ mail.sender().username }}</strong></a>
+                        </p>
+                        <p>
+                            时间：<strong class="created-time" data-created_time="{{ mail.created_time }}"></strong>
+                        </p>
+                        <p>
+                            收件人：
+                            <a href="{{ url_for('index.user_detail',id=mail.receiver_id) }}">
+                                <strong>{{ mail.receiver().username }}</strong></a>
+                        </p>
+                    </div>
+                </div>
+                <div class='inner topic'>
+                    <div class='topic_content'>
+                        <div class="markdown-text">{{ mail.content }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

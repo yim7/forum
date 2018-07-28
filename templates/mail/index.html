@@ -17,7 +17,7 @@
                             <span>
                                 <a href="/user/{{ r.sender_id }}" target='_blank'>{{ r.sender().username }}</a>
                                 发送给你：
-                                <a href="{{ url_for('.view', id = r.id) }}">主题：{{ r.title }}</a>
+                                <a href="{{ url_for('.view', id = r.id) }}">{{ r.title }}</a>
                             </span>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                                 你发送给
                                 <a href="/user/{{ s.receiver_id }}" target='_blank'>{{ s.receiver().username }}</a>
                                 ：
-                                <a href="{{ url_for('.view', id = s.id) }}">主题：{{ s.title }}</a>
+                                <a href="{{ url_for('.view', id = s.id) }}">{{ s.title }}</a>
                             </span>
                         </div>
                     </div>
